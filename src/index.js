@@ -18,6 +18,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
     });
 
+    function getMousePosition(canvas, e) {
+        let rect = canvas.getBoundingClientRect();
+        return {
+          x: e.clientX - rect.left,
+          y: e.clientY - rect.top
+        };
+      }
+
+    $("canvas").on("mousedown", (event) => {
+        let mousePosition = getMousePosition(canvas, event);
+        clicked(mousePosition);
+    });
+
+    function clicked(mousePosition) {
+        currentCanvas.addPoint([mousePosition.x, mousePosition.y]);
+        for(let i = 0; i < 4; i++) {
+            currentCanvas.addPoint([mousePosition.x + ((i+1) * 50), mousePosition.y]);
+        }
+        currentCanvas.draw(context);
+    }
+
     function resetSlider() {
         //TODO: Implement
         console.log("reset slider ran");
