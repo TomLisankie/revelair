@@ -49,7 +49,10 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!key) return;
 
         const keyNote = key.getAttribute("data-note");
-        
+        clicked({
+                x: Math.floor(Math.random() * RevelareCanvas.DIM_X),
+                y: Math.floor(Math.random() * RevelareCanvas.DIM_Y)
+            });
         key.classList.add("playing");
         note.innerHTML = keyNote;
         audio.currentTime = 0;
