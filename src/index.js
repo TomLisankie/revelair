@@ -39,11 +39,6 @@ document.addEventListener("DOMContentLoaded", () => {
         currentCanvas.draw(context);
     }
 
-    function resetSlider() {
-        //TODO: Implement
-        console.log("reset slider ran");
-    }
-
     function generatePoints(pointCount) {
         for(let i = 0; i < pointCount; i++){
             currentCanvas.addPoint([Math.floor(Math.random() * RevelareCanvas.DIM_X), 
