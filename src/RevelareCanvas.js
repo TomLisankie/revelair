@@ -11,7 +11,7 @@ class RevelareCanvas {
 
     replaceImage(image, context) {
         this.clearCanvas(context);
-        console.log("canvas cleared?")
+        //console.log("canvas cleared?")
         const newImage = new Image();
         newImage.src = image;
 
@@ -34,7 +34,8 @@ class RevelareCanvas {
     }
 
     calculateColorMap(context) {
-
+        // https://roelhollander.eu/en/tuning-frequency/sound-light-colour/
+        // http://designingsound.org/2017/12/20/mapping-sound-to-color/#sdendnote3sym
         let reds = [];
         let greens = [];
         let blues = [];
@@ -59,15 +60,20 @@ class RevelareCanvas {
             blues2d.push(blues.splice(0, RevelareCanvas.DIM_X));
 
         }
-        console.log("reds2d: ", reds2d);
+        //console.log("reds2d: ", reds2d);
         this.colorMap = {
             reds: reds2d,
             greens: greens2d,
             blues: blues2d
         };
-        console.log(this.colorMap);
+        //console.log(this.colorMap);
 
     }
+
+    // colorMapToSong(colorMap) {
+    //     // forget converting the entire color map to a song, just use the colors obtained
+    //     // from the averageColors function to generate the song.
+    // }
 
     addPoint(point) {
         this.points.push(point);
@@ -84,7 +90,7 @@ class RevelareCanvas {
         this.renderImage(context);
 
         let voronoiPolys = this.getVoronoiPolys();
-        console.log(typeof voronoiPolys);
+        //console.log(typeof voronoiPolys);
         this.printPolys(voronoiPolys, context);
     }
 
@@ -125,6 +131,22 @@ class RevelareCanvas {
         let polyReds = this.sumColorsBoundedByPolygon(polygon, bounds, smallReds);
         let polyGreens = this.sumColorsBoundedByPolygon(polygon, bounds, smallGreens);
         let polyBlues = this.sumColorsBoundedByPolygon(polygon, bounds, smallBlues);
+
+        // I'll just make a function in here so I don't have to keep object state around.
+        // I only need colorMapToSong once anyway.
+        var notes = [polyReds, polyGreens, polyBlues].map((num, i) => {
+            
+            console.log(i);
+            if(num == polyReds) {
+                return "E";
+            } else if (num == polyGreens) {
+                return "B";
+            } else {
+                return "F";
+            }
+        });
+
+        console.log(notes);
 
         return d3.rgb(polyReds, polyGreens, polyBlues);
 
@@ -168,7 +190,7 @@ class RevelareCanvas {
     }
 
     submatrix(bounds) {
-        console.log("colorMap: ", this.colorMap);
+        //console.log("colorMap: ", this.colorMap);
         let relevantRedRows = this.relevantRows(bounds, this.colorMap.reds);
         let relevantGreenRows = this.relevantRows(bounds, this.colorMap.greens);
         let relevantBlueRows = this.relevantRows(bounds, this.colorMap.blues);
@@ -176,7 +198,7 @@ class RevelareCanvas {
       }
     
     relevantRows(bounds, colorMapSingles) {
-        console.log("colorMapSingles: ", colorMapSingles);
+        //console.log("colorMapSingles: ", colorMapSingles);
         let relevantColRows = colorMapSingles.slice(Math.floor(bounds.ymin), Math.floor(bounds.ymax));
         let relevantColors = relevantColRows.map((row) => {
             return row.slice(Math.floor(bounds.xmin), Math.floor(bounds.xmax));
