@@ -60,13 +60,12 @@ class RevelareCanvas {
             blues2d.push(blues.splice(0, RevelareCanvas.DIM_X));
 
         }
-        //console.log("reds2d: ", reds2d);
+        
         this.colorMap = {
             reds: reds2d,
             greens: greens2d,
             blues: blues2d
         };
-        //console.log(this.colorMap);
 
     }
 
@@ -100,11 +99,20 @@ class RevelareCanvas {
 
     printPolys(voronoiPolys, context) {
 
+        var notes = [];
         for(let polygon of voronoiPolys) {
             context.beginPath();
             context.globalAlpha = this.opacity;
 
             let fillColor = this.averageColors(polygon, context);
+            let value = Math.max(fillColor);
+            if(value < 20) {
+                notes.push("E");
+            } else if (value < 150) {
+                notes.push("B");
+            } else {
+                notes.push("F");
+            }
             context.fillStyle = fillColor;
 
             polygon.forEach(function(vertex) {
@@ -114,6 +122,8 @@ class RevelareCanvas {
             context.fill();
             context.globalAlpha = 1;
         }
+
+        console.log(notes);
 
     }
 
@@ -126,22 +136,6 @@ class RevelareCanvas {
         let polyReds = this.sumColorsBoundedByPolygon(polygon, bounds, smallReds);
         let polyGreens = this.sumColorsBoundedByPolygon(polygon, bounds, smallGreens);
         let polyBlues = this.sumColorsBoundedByPolygon(polygon, bounds, smallBlues);
-
-        // I'll just make a function in here so I don't have to keep object state around.
-        // I only need colorMapToSong once anyway.
-        var notes = [polyReds, polyGreens, polyBlues].map((num, i) => {
-            
-            console.log(i);
-            if(num == polyReds) {
-                return "E";
-            } else if (num == polyGreens) {
-                return "B";
-            } else {
-                return "F";
-            }
-        });
-
-        console.log(notes);
 
         return d3.rgb(polyReds, polyGreens, polyBlues);
 
@@ -218,7 +212,7 @@ class RevelareCanvas {
 }
 
 RevelareCanvas.BG_COLOR = "#000000";
-RevelareCanvas.DIM_X = 1200;
-RevelareCanvas.DIM_Y = 800;
+RevelareCanvas.DIM_X = 600;
+RevelareCanvas.DIM_Y = 400;
 
 export {RevelareCanvas};
