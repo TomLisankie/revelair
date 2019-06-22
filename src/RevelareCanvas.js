@@ -70,11 +70,6 @@ class RevelareCanvas {
 
     }
 
-    // colorMapToSong(colorMap) {
-    //     // forget converting the entire color map to a song, just use the colors obtained
-    //     // from the averageColors function to generate the song.
-    // }
-
     addPoint(point) {
         this.points.push(point);
     }
