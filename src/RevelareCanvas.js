@@ -7,6 +7,7 @@ class RevelareCanvas {
         this.points = [];
         this.image = new Image();
         this.colorMap = {};
+        this.song = [];
     }
 
     replaceImage(image, context) {
@@ -19,7 +20,7 @@ class RevelareCanvas {
             this.image = newImage;
             this.renderImage(context);
             this.calculateColorMap(context);
-            this.draw(context);
+            this.drawLoadedImage(context);
         };
     }
 
@@ -77,6 +78,37 @@ class RevelareCanvas {
         return this.points;
     }
 
+    drawLoadedImage(context) {
+        let polygons = this.draw(context);
+        console.log("polygons: ", polygons);
+        this.song = this.generateSongFromPolys(polygons, context);
+        console.log("The song: ", this.song);
+    }
+
+    generateSongFromPolys(polygons, context) {
+
+        var notes = [];
+        console.log("in generateSongFromPolys");
+        console.log("polygons: ", polygons);
+
+        for(let polygon of polygons) {
+            let fillColor = this.averageColors(polygon, context);
+            console.log("fillColor: ", fillColor);
+            let value = Math.max(fillColor);
+            console.log("fillColor value: ", value);
+            if(value < 20) {
+                notes.push("E");
+            } else if (value < 150) {
+                notes.push("B");
+            } else {
+                notes.push("F");
+            }
+        }
+
+        return notes;
+
+    }
+
     draw(context) {
         this.clearCanvas(context);
         context.fillStyle = RevelareCanvas.BG_COLOR;
@@ -84,8 +116,8 @@ class RevelareCanvas {
         this.renderImage(context);
 
         let voronoiPolys = this.getVoronoiPolys();
-        //console.log(typeof voronoiPolys);
         this.printPolys(voronoiPolys, context);
+        return voronoiPolys;
     }
 
     getVoronoiPolys() {
@@ -99,20 +131,11 @@ class RevelareCanvas {
 
     printPolys(voronoiPolys, context) {
 
-        var notes = [];
         for(let polygon of voronoiPolys) {
             context.beginPath();
             context.globalAlpha = this.opacity;
 
             let fillColor = this.averageColors(polygon, context);
-            let value = Math.max(fillColor);
-            if(value < 20) {
-                notes.push("E");
-            } else if (value < 150) {
-                notes.push("B");
-            } else {
-                notes.push("F");
-            }
             context.fillStyle = fillColor;
 
             polygon.forEach(function(vertex) {
@@ -122,8 +145,6 @@ class RevelareCanvas {
             context.fill();
             context.globalAlpha = 1;
         }
-
-        console.log(notes);
 
     }
 
