@@ -81,14 +81,14 @@ class RevelareCanvas {
     drawLoadedImage(context) {
         let polygons = this.draw(context);
         console.log("polygons: ", polygons);
-        this.song = this.generateSongFromPolys(polygons, context);
+        this.song = this.generateSongFromColorsOfPolys(polygons, context);
         console.log("The song: ", this.song);
     }
 
-    generateSongFromPolys(polygons, context) {
+    generateSongFromColorsOfPolys(polygons, context) {
 
         var notes = [];
-        console.log("in generateSongFromPolys");
+        console.log("in generateSongFromColorsOfPolys");
         console.log("polygons: ", polygons);
 
         for(let polygon of polygons) {
