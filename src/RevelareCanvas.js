@@ -20,7 +20,7 @@ class RevelareCanvas {
             this.image = newImage;
             this.renderImage(context);
             this.calculateColorMap(context);
-            this.drawLoadedImage(context);
+            this.initialDraw(context);
         };
     }
 
