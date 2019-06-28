@@ -77,7 +77,7 @@ class RevelareCanvas {
         return this.points;
     }
 
-    drawLoadedImage(context) {
+    initialDraw(context) {
         let polygons = this.draw(context);
         console.log("polygons: ", polygons);
         this.song = this.generateSongFromColorsOfPolys(polygons, context);
