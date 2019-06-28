@@ -12,7 +12,6 @@ class RevelareCanvas {
 
     replaceImage(image, context) {
         this.clearCanvas(context);
-        //console.log("canvas cleared?")
         const newImage = new Image();
         newImage.src = image;
 
