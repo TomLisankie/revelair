@@ -124,7 +124,7 @@ class RevelareCanvas {
         let delaunay = Delaunay.from(this.points);
         let voronoi = delaunay.voronoi([0, 0, 
                                             RevelareCanvas.DIM_X, RevelareCanvas.DIM_Y]);
-        return voronoi.cellPolygons();
+        return Array.from(voronoi.cellPolygons());
 
     }
 
@@ -169,24 +169,24 @@ class RevelareCanvas {
         let polyMaxY = 0;
 
         polygon.forEach((vertex) => {
-        if (vertex[0] < polyMinX) {
-            polyMinX = vertex[0];
-            if (polyMinX < 0) {
-                polyMinX = 0;
+            if (vertex[0] < polyMinX) {
+                polyMinX = vertex[0];
+                if (polyMinX < 0) {
+                    polyMinX = 0;
+                }
             }
-        }
-        if (vertex[0] > polyMaxX) {
-            polyMaxX = vertex[0];
-        }
-        if (vertex[1] < polyMinY) {
-            polyMinY = vertex[1];
-            if (polyMinY < 0) {
-                polyMinY = 0;
+            if (vertex[0] > polyMaxX) {
+                polyMaxX = vertex[0];
             }
-        }
-        if (vertex[1] > polyMaxY) {
-            polyMaxY = vertex[1];
-        }
+            if (vertex[1] < polyMinY) {
+                polyMinY = vertex[1];
+                if (polyMinY < 0) {
+                    polyMinY = 0;
+                }
+            }
+            if (vertex[1] > polyMaxY) {
+                polyMaxY = vertex[1];
+            }
         });
 
         return {
