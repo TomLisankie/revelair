@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let reader = new FileReader();
         reader.onload = function(event) {
             currentCanvas.replaceImage(event.target.result, context);
-            currentCanvas.draw(context);
+            //currentCanvas.initialDraw(context);
         };
         reader.readAsDataURL(event.target.files[0]);
 

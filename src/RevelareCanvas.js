@@ -7,11 +7,11 @@ class RevelareCanvas {
         this.points = [];
         this.image = new Image();
         this.colorMap = {};
+        this.song = [];
     }
 
     replaceImage(image, context) {
         this.clearCanvas(context);
-        console.log("canvas cleared?")
         const newImage = new Image();
         newImage.src = image;
 
@@ -19,7 +19,7 @@ class RevelareCanvas {
             this.image = newImage;
             this.renderImage(context);
             this.calculateColorMap(context);
-            this.draw(context);
+            this.initialDraw(context);
         };
     }
 
@@ -34,7 +34,8 @@ class RevelareCanvas {
     }
 
     calculateColorMap(context) {
-
+        // https://roelhollander.eu/en/tuning-frequency/sound-light-colour/
+        // http://designingsound.org/2017/12/20/mapping-sound-to-color/#sdendnote3sym
         let reds = [];
         let greens = [];
         let blues = [];
@@ -59,13 +60,12 @@ class RevelareCanvas {
             blues2d.push(blues.splice(0, RevelareCanvas.DIM_X));
 
         }
-        console.log("reds2d: ", reds2d);
+        
         this.colorMap = {
             reds: reds2d,
             greens: greens2d,
             blues: blues2d
         };
-        console.log(this.colorMap);
 
     }
 
@@ -77,6 +77,44 @@ class RevelareCanvas {
         return this.points;
     }
 
+    initialDraw(context) {
+        let polygons = this.draw(context);
+        console.log("polygons: ", polygons);
+        this.song = this.generateSongFromColorsOfPolys(polygons, context);
+        console.log("The song: ", this.song);
+    }
+
+    generateSongFromColorsOfPolys(polygons, context) {
+
+        var notes = [];
+        console.log("in generateSongFromColorsOfPolys");
+        console.log("polygons: ", polygons);
+
+        for(let polygon of polygons) {
+            let rgb = this.averageColors(polygon, context);
+
+            var color = "";
+            var largestValue = 1;
+            Object.keys(rgb).forEach((key, index) => {
+                if(rgb[key] > largestValue) {
+                    color = key;
+                    largestValue = rgb[key];
+                }
+            });
+            if(color == "r") {
+                notes.push("E");
+            } else if (color == "g") {
+                notes.push("B");
+            } else {
+                notes.push("F");
+            }
+
+        }
+
+        return notes;
+
+    }
+
     draw(context) {
         this.clearCanvas(context);
         context.fillStyle = RevelareCanvas.BG_COLOR;
@@ -84,8 +122,8 @@ class RevelareCanvas {
         this.renderImage(context);
 
         let voronoiPolys = this.getVoronoiPolys();
-        console.log(typeof voronoiPolys);
         this.printPolys(voronoiPolys, context);
+        return voronoiPolys;
     }
 
     getVoronoiPolys() {
@@ -93,7 +131,7 @@ class RevelareCanvas {
         let delaunay = Delaunay.from(this.points);
         let voronoi = delaunay.voronoi([0, 0, 
                                             RevelareCanvas.DIM_X, RevelareCanvas.DIM_Y]);
-        return voronoi.cellPolygons();
+        return Array.from(voronoi.cellPolygons());
 
     }
 
@@ -103,8 +141,8 @@ class RevelareCanvas {
             context.beginPath();
             context.globalAlpha = this.opacity;
 
-            let fillColor = this.averageColors(polygon, context);
-            context.fillStyle = fillColor;
+            let rgb = this.averageColors(polygon, context);
+            context.fillStyle = rgb;
 
             polygon.forEach(function(vertex) {
                 context.lineTo(...vertex);
@@ -138,24 +176,24 @@ class RevelareCanvas {
         let polyMaxY = 0;
 
         polygon.forEach((vertex) => {
-        if (vertex[0] < polyMinX) {
-            polyMinX = vertex[0];
-            if (polyMinX < 0) {
-                polyMinX = 0;
+            if (vertex[0] < polyMinX) {
+                polyMinX = vertex[0];
+                if (polyMinX < 0) {
+                    polyMinX = 0;
+                }
             }
-        }
-        if (vertex[0] > polyMaxX) {
-            polyMaxX = vertex[0];
-        }
-        if (vertex[1] < polyMinY) {
-            polyMinY = vertex[1];
-            if (polyMinY < 0) {
-                polyMinY = 0;
+            if (vertex[0] > polyMaxX) {
+                polyMaxX = vertex[0];
             }
-        }
-        if (vertex[1] > polyMaxY) {
-            polyMaxY = vertex[1];
-        }
+            if (vertex[1] < polyMinY) {
+                polyMinY = vertex[1];
+                if (polyMinY < 0) {
+                    polyMinY = 0;
+                }
+            }
+            if (vertex[1] > polyMaxY) {
+                polyMaxY = vertex[1];
+            }
         });
 
         return {
@@ -168,7 +206,7 @@ class RevelareCanvas {
     }
 
     submatrix(bounds) {
-        console.log("colorMap: ", this.colorMap);
+        //console.log("colorMap: ", this.colorMap);
         let relevantRedRows = this.relevantRows(bounds, this.colorMap.reds);
         let relevantGreenRows = this.relevantRows(bounds, this.colorMap.greens);
         let relevantBlueRows = this.relevantRows(bounds, this.colorMap.blues);
@@ -176,7 +214,7 @@ class RevelareCanvas {
       }
     
     relevantRows(bounds, colorMapSingles) {
-        console.log("colorMapSingles: ", colorMapSingles);
+        //console.log("colorMapSingles: ", colorMapSingles);
         let relevantColRows = colorMapSingles.slice(Math.floor(bounds.ymin), Math.floor(bounds.ymax));
         let relevantColors = relevantColRows.map((row) => {
             return row.slice(Math.floor(bounds.xmin), Math.floor(bounds.xmax));
@@ -201,7 +239,7 @@ class RevelareCanvas {
 }
 
 RevelareCanvas.BG_COLOR = "#000000";
-RevelareCanvas.DIM_X = 1200;
-RevelareCanvas.DIM_Y = 800;
+RevelareCanvas.DIM_X = 600;
+RevelareCanvas.DIM_Y = 400;
 
 export {RevelareCanvas};
