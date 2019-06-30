@@ -91,14 +91,14 @@ class RevelareCanvas {
         console.log("polygons: ", polygons);
 
         for(let polygon of polygons) {
-            let fillColor = this.averageColors(polygon, context);
+            let rgb = this.averageColors(polygon, context);
 
             var color = "";
             var largestValue = 1;
-            Object.keys(fillColor).forEach((key, index) => {
-                if(fillColor[key] > largestValue) {
+            Object.keys(rgb).forEach((key, index) => {
+                if(rgb[key] > largestValue) {
                     color = key;
-                    largestValue = fillColor[key];
+                    largestValue = rgb[key];
                 }
             });
             var note = "";
@@ -143,8 +143,8 @@ class RevelareCanvas {
             context.beginPath();
             context.globalAlpha = this.opacity;
 
-            let fillColor = this.averageColors(polygon, context);
-            context.fillStyle = fillColor;
+            let rgb = this.averageColors(polygon, context);
+            context.fillStyle = rgb;
 
             polygon.forEach(function(vertex) {
                 context.lineTo(...vertex);
