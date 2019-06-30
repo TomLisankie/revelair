@@ -92,16 +92,25 @@ class RevelareCanvas {
 
         for(let polygon of polygons) {
             let fillColor = this.averageColors(polygon, context);
-            console.log("fillColor: ", fillColor);
-            let value = Math.max(fillColor);
-            console.log("fillColor value: ", value);
-            if(value < 20) {
+
+            var color = "";
+            var largestValue = 1;
+            Object.keys(fillColor).forEach((key, index) => {
+                if(fillColor[key] > largestValue) {
+                    color = key;
+                    largestValue = fillColor[key];
+                }
+            });
+            var note = "";
+            if(color == "r") {
                 notes.push("E");
-            } else if (value < 150) {
+            } else if (color == "g") {
                 notes.push("B");
             } else {
                 notes.push("F");
             }
+            notes.push(note);
+
         }
 
         return notes;
