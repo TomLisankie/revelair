@@ -101,7 +101,6 @@ class RevelareCanvas {
                     largestValue = rgb[key];
                 }
             });
-            var note = "";
             if(color == "r") {
                 notes.push("E");
             } else if (color == "g") {
@@ -109,7 +108,6 @@ class RevelareCanvas {
             } else {
                 notes.push("F");
             }
-            notes.push(note);
 
         }
 
