@@ -38,6 +38,14 @@ document.addEventListener("DOMContentLoaded", () => {
         currentCanvas.draw(context);
     }
 
+    function keyPlayed(mousePosition) {
+        currentCanvas.addPoint([mousePosition.x, mousePosition.y]);
+        for(let i = 0; i < 4; i++) {
+            currentCanvas.addPoint([mousePosition.x + ((i+1) * 50), mousePosition.y]);
+        }
+        currentCanvas.draw(context);
+    }
+
     const keys = document.querySelectorAll(".key"),
             note = document.querySelector(".nowplaying"),
             hints = document.querySelectorAll(".hints");
@@ -51,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const keyNote = key.getAttribute("data-note");
         console.log(keyNote);
         if(keyNote == currentCanvas.song[0]) {
-            clicked({
+            keyPlayed({
                 x: Math.floor(Math.random() * RevelairCanvas.DIM_X),
                 y: Math.floor(Math.random() * RevelairCanvas.DIM_Y)
             });
