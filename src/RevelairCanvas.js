@@ -2,7 +2,7 @@ const d3Poly = require("d3-polygon");
 const d3 = require("d3");
 import {Delaunay} from "d3-delaunay";
 
-class RevelareCanvas {
+class RevelairCanvas {
     constructor(context) {
         this.points = [];
         this.image = new Image();
@@ -24,13 +24,13 @@ class RevelareCanvas {
     }
 
     clearCanvas(context) {
-        context.fillStyle = RevelareCanvas.BG_COLOR;
-        context.fillRect(0, 0, RevelareCanvas.DIM_X, RevelareCanvas.DIM_Y);
+        context.fillStyle = RevelairCanvas.BG_COLOR;
+        context.fillRect(0, 0, RevelairCanvas.DIM_X, RevelairCanvas.DIM_Y);
     }
 
     renderImage(context) {
         context.drawImage(this.image, 0, 0, this.image.width, this.image.height,
-                                        0, 0, RevelareCanvas.DIM_X, RevelareCanvas.DIM_Y);
+                                        0, 0, RevelairCanvas.DIM_X, RevelairCanvas.DIM_Y);
     }
 
     calculateColorMap(context) {
@@ -42,7 +42,7 @@ class RevelareCanvas {
         let alpha = [];
 
         const colorMap = context.getImageData(0, 0, 
-            RevelareCanvas.DIM_X, RevelareCanvas.DIM_Y);
+            RevelairCanvas.DIM_X, RevelairCanvas.DIM_Y);
 
         let colorfuls = [reds, greens, blues, alpha];
         for(let i = 0; i < colorMap.data.length; i++) {
@@ -53,11 +53,11 @@ class RevelareCanvas {
         let greens2d = [];
         let blues2d = [];
 
-        for(let i = 0; i < RevelareCanvas.DIM_Y; i++) {
+        for(let i = 0; i < RevelairCanvas.DIM_Y; i++) {
 
-            reds2d.push(reds.splice(0, RevelareCanvas.DIM_X));
-            greens2d.push(greens.splice(0, RevelareCanvas.DIM_X));
-            blues2d.push(blues.splice(0, RevelareCanvas.DIM_X));
+            reds2d.push(reds.splice(0, RevelairCanvas.DIM_X));
+            greens2d.push(greens.splice(0, RevelairCanvas.DIM_X));
+            blues2d.push(blues.splice(0, RevelairCanvas.DIM_X));
 
         }
         
@@ -117,8 +117,8 @@ class RevelareCanvas {
 
     draw(context) {
         this.clearCanvas(context);
-        context.fillStyle = RevelareCanvas.BG_COLOR;
-        context.fillRect(0, 0, RevelareCanvas.DIM_X, RevelareCanvas.DIM_Y);
+        context.fillStyle = RevelairCanvas.BG_COLOR;
+        context.fillRect(0, 0, RevelairCanvas.DIM_X, RevelairCanvas.DIM_Y);
         this.renderImage(context);
 
         let voronoiPolys = this.getVoronoiPolys();
@@ -130,7 +130,7 @@ class RevelareCanvas {
 
         let delaunay = Delaunay.from(this.points);
         let voronoi = delaunay.voronoi([0, 0, 
-                                            RevelareCanvas.DIM_X, RevelareCanvas.DIM_Y]);
+                                            RevelairCanvas.DIM_X, RevelairCanvas.DIM_Y]);
         return Array.from(voronoi.cellPolygons());
 
     }
@@ -170,8 +170,8 @@ class RevelareCanvas {
 
     squareBounds(polygon) {
 
-        let polyMinX = RevelareCanvas.DIM_X;
-        let polyMinY = RevelareCanvas.DIM_Y;
+        let polyMinX = RevelairCanvas.DIM_X;
+        let polyMinY = RevelairCanvas.DIM_Y;
         let polyMaxX = 0;
         let polyMaxY = 0;
 
@@ -238,8 +238,8 @@ class RevelareCanvas {
 
 }
 
-RevelareCanvas.BG_COLOR = "#000000";
-RevelareCanvas.DIM_X = 600;
-RevelareCanvas.DIM_Y = 400;
+RevelairCanvas.BG_COLOR = "#000000";
+RevelairCanvas.DIM_X = 600;
+RevelairCanvas.DIM_Y = 400;
 
-export {RevelareCanvas};
+export {RevelairCanvas};

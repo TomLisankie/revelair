@@ -1,9 +1,9 @@
-import {RevelareCanvas} from "./RevelareCanvas";
+import {RevelairCanvas} from "./RevelairCanvas";
 
 document.addEventListener("DOMContentLoaded", () => {
 
     const canvas = document.getElementById("canvas");
-    var currentCanvas = new RevelareCanvas();
+    var currentCanvas = new RevelairCanvas();
     var context = canvas.getContext("2d");
 
     $(".image-load").on("change", function(event) {
@@ -52,8 +52,8 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log(keyNote);
         if(keyNote == currentCanvas.song[0]) {
             clicked({
-                x: Math.floor(Math.random() * RevelareCanvas.DIM_X),
-                y: Math.floor(Math.random() * RevelareCanvas.DIM_Y)
+                x: Math.floor(Math.random() * RevelairCanvas.DIM_X),
+                y: Math.floor(Math.random() * RevelairCanvas.DIM_Y)
             });
             currentCanvas.song.shift();
             console.log(currentCanvas.song);
@@ -81,8 +81,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function generatePoints(pointCount) {
         for(let i = 0; i < pointCount; i++){
-            currentCanvas.addPoint([Math.floor(Math.random() * RevelareCanvas.DIM_X), 
-                Math.floor(Math.random() * RevelareCanvas.DIM_Y)]);
+            currentCanvas.addPoint([Math.floor(Math.random() * RevelairCanvas.DIM_X), 
+                Math.floor(Math.random() * RevelairCanvas.DIM_Y)]);
         }
     }
 
