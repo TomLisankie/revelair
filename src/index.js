@@ -38,11 +38,17 @@ document.addEventListener("DOMContentLoaded", () => {
         currentCanvas.draw(context);
     }
 
-    function keyPlayed(mousePosition) {
-        currentCanvas.addPoint([mousePosition.x, mousePosition.y]);
-        for(let i = 0; i < 4; i++) {
-            currentCanvas.addPoint([mousePosition.x + ((i+1) * 50), mousePosition.y]);
+    function keyPlayed(position) {
+        // should add a grid of new points. Each point is separated from every other point by a constant.
+        currentCanvas.addPoint([position.x, position.y]);
+        // make square of points:
+        const LENGTH_OF_SQUARE = 5;
+        for(var i = 0; i < LENGTH_OF_SQUARE; i++){
+            for(var j = 0; j < LENGTH_OF_SQUARE; j++) {
+                currentCanvas.addPoint([position.x + ((i+1) * 50), position.y + ((j+1) * 50)]);
+            }
         }
+        // maybe make it so it adds points in the area where the color that corresponds to the note being played is found
         currentCanvas.draw(context);
     }
 

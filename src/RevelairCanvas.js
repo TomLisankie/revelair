@@ -85,6 +85,9 @@ class RevelairCanvas {
     }
 
     generateSongFromColorsOfPolys(polygons, context) {
+        // have different numbers of notes depending on the hardness level that the player is playing at
+        // have it go backwards in progress with each wrong note
+        // user is basically guessing notes based on which colors they're seeing
 
         var notes = [];
         console.log("in generateSongFromColorsOfPolys");
