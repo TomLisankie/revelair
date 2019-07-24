@@ -1,5 +1,5 @@
-const d3Poly = require("d3-polygon");
-const d3 = require("d3");
+import * as d3Poly from "d3-polygon";
+import * as d3 from "d3";
 import {Delaunay} from "d3-delaunay";
 
 class RevelairCanvas {
@@ -34,8 +34,7 @@ class RevelairCanvas {
     }
 
     calculateColorMap(context) {
-        // https://roelhollander.eu/en/tuning-frequency/sound-light-colour/
-        // http://designingsound.org/2017/12/20/mapping-sound-to-color/#sdendnote3sym
+        
         let reds = [];
         let greens = [];
         let blues = [];
@@ -116,6 +115,11 @@ class RevelairCanvas {
 
         return notes;
 
+    }
+
+    getNoteForColor(color) {
+        // https://roelhollander.eu/en/tuning-frequency/sound-light-colour/
+        // http://designingsound.org/2017/12/20/mapping-sound-to-color/#sdendnote3sym
     }
 
     draw(context) {
